@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.MemoryMappedFiles;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Mapping.Core;
 
 namespace Mapping.Console
 {
@@ -10,6 +12,16 @@ namespace Mapping.Console
 	{
 		static void Main (string[] args)
 		{
+			var a = new A
+			{
+				FirstName = "Gregory",
+				LastName = "House",
+				Age = 39
+			};
+
+			var b = Mapper.Map<A, B>(a);
+
+			System.Console.ReadLine();
 		}
 	}
 }
