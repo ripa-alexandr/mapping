@@ -19,6 +19,7 @@ namespace Mapping.Console
 				Age = 39
 			};
 
+			Mapper.CreateMap<A, B>();
 			var b = Mapper.Map<A, B>(a);
 
 			System.Console.ReadLine();

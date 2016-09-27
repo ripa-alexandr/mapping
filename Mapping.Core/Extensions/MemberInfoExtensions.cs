@@ -35,6 +35,21 @@ namespace Mapping.Core.Extensions
 				default:
 					throw new NotImplementedException();
 			}
-		} 
+		}
+
+		public static Type GetValueType (this MemberInfo memberInfo)
+		{
+			switch (memberInfo.MemberType)
+			{
+				case MemberTypes.Field:
+					return ((FieldInfo)memberInfo).FieldType;
+
+				case MemberTypes.Property:
+					return  ((PropertyInfo)memberInfo).PropertyType;
+
+				default:
+					throw new NotImplementedException();
+			}
+		}
 	}
 }

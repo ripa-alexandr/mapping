@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
+using Mapping.Core.Extensions;
 
 namespace Mapping.Core
 {
@@ -11,7 +12,7 @@ namespace Mapping.Core
 		public Type SourceType { get; private set; }
 		public Type DestinationType { get; private set; }
 		public ICollection<MapItem> MapItems { get; private set; }
-
+		
 		public Map (Type sourceType, Type destinationType)
 		{
 			this.SourceType = sourceType;
@@ -40,7 +41,7 @@ namespace Mapping.Core
 				var source = sources.FirstOrDefault(i => i.Name.Equals(destination.Name));
 
 				// TODO: add logic for check convertible
-				if (source != null && destination.MemberType == source.MemberType)
+				if (source != null && destination.GetValueType() == source.GetValueType())
 				{
 					MapItems.Add(new MapItem(source, destination));
 				}
