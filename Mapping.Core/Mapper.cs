@@ -40,9 +40,11 @@ namespace Mapping.Core
 
 		public static void CreateMap<TSource, TDestination> ()
 		{
-			string key = string.Concat(typeof(TSource).FullName, typeof(TDestination).FullName);
+			var sourceType = typeof (TSource);
+			var destinationType = typeof (TDestination);
+			string key = string.Concat(sourceType.FullName, destinationType.FullName);
 
-			Instance.mappings.Add(key, new Map(typeof(TSource), typeof(TDestination)));
+			Instance.mappings.Add(key, new Map(sourceType, destinationType));
 		}
 
 		public static TDestination Map<TSource, TDestination> (TSource source) where TDestination : new() 
