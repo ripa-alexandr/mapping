@@ -8,16 +8,16 @@ using Mapping.Core.Extensions;
 
 namespace Mapping.Core.Maps
 {
-	public class ReflectionMap : IMap
+	public class ReflectionMap<TSource, TDestination> : IMap<TSource, TDestination> where TDestination : new()
 	{
 		public Type SourceType { get; private set; }
 		public Type DestinationType { get; private set; }
 		public ICollection<MapItem> MapItems { get; private set; }
 		
-		public ReflectionMap (Type sourceType, Type destinationType)
+		public ReflectionMap ()
 		{
-			this.SourceType = sourceType;
-			this.DestinationType = destinationType;
+			this.SourceType = typeof(TSource);
+			this.DestinationType = typeof(TDestination);
 			this.MapItems = new Collection<MapItem>();
 
 			this.CreateMap();
@@ -49,7 +49,7 @@ namespace Mapping.Core.Maps
 			}
 		}
 
-		public TDestination Map<TSource, TDestination>(TSource source) where TDestination : new()
+		public TDestination Map(TSource source)
 		{
 			TDestination destination = new TDestination();
 

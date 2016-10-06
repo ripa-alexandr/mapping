@@ -1,7 +1,7 @@
 ﻿namespace Mapping.Core.Api
 {
-	public interface IMap
+	public interface IMap<TSource, TDestination> where TDestination : new()
 	{
-		TDestination Map<TSource, TDestination> (TSource source) where TDestination : new();
+		TDestination Map (TSource source);
 	}
 }

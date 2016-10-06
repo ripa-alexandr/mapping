@@ -3,20 +3,18 @@ using Mapping.Core.Api;
 
 namespace Mapping.Core.Maps
 {
-	public class CustomMap : IMap
+	public class CustomMap<TSource, TDestination> : IMap<TSource, TDestination> where TDestination : new()
 	{
-		private readonly object func;
+		private readonly Func<TSource, TDestination> func;
 
-		public CustomMap(object func)
+		public CustomMap(Func<TSource, TDestination> func)
 		{
 			this.func = func;
 		}
 
-		public TDestination Map<TSource, TDestination>(TSource source) where TDestination : new()
+		public TDestination Map(TSource source)
 		{
-			Func<TSource, TDestination> mappingFunction = (Func<TSource, TDestination>)func;
-
-			return mappingFunction(source);
+			return func(source);
 		}
 	}
 }
