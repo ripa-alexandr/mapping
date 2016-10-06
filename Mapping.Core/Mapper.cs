@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Mapping.Core.Api;
 using Mapping.Core.Extensions;
-using Mapping.Core.MapperConfigurations;
+using Mapping.Core.Maps;
 
 namespace Mapping.Core
 {
@@ -12,7 +12,7 @@ namespace Mapping.Core
 
 		private static readonly Object syncObj = new Object();
 		private static Mapper instance;
-		private readonly Dictionary<string, IMapperConfiguration> mappings;
+		private readonly Dictionary<string, IMap> mappings;
 
 		public static Mapper Instance
 		{
@@ -35,7 +35,7 @@ namespace Mapping.Core
 
 		private Mapper ()
 		{
-			mappings = new Dictionary<string, IMapperConfiguration>();
+			mappings = new Dictionary<string, IMap>();
 		}
 
 		#endregion
@@ -46,14 +46,14 @@ namespace Mapping.Core
 			var destinationType = typeof (TDestination);
 			string key = string.Concat(sourceType.FullName, destinationType.FullName);
 
-			Instance.mappings.Add(key, new ReflectionMapperConfiguration(sourceType, destinationType));
+			Instance.mappings.Add(key, new ReflectionMap(sourceType, destinationType));
 		}
 
 		public static void ConvertUsing<TSource, TDestination> (Func<TSource, TDestination> func)
 		{
 			string key = string.Concat(typeof(TSource).FullName, typeof(TDestination).FullName);
 
-			Instance.mappings.Add(key, new CustomMapperConfiguration(func));
+			Instance.mappings.Add(key, new CustomMap(func));
 		}
 
 		public static TDestination Map<TSource, TDestination> (TSource source) where TDestination : new() 

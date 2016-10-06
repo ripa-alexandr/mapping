@@ -1,13 +1,13 @@
 ﻿using System.Reflection;
 
-namespace Mapping.Core.MapperConfigurations
+namespace Mapping.Core.Maps
 {
-	public class MapperConfigurationItem
+	public class MapItem
 	{
 		public MemberInfo Source { get; private set; }
 		public MemberInfo Destination { get; private set; }
 
-		public MapperConfigurationItem (MemberInfo source, MemberInfo destination)
+		public MapItem (MemberInfo source, MemberInfo destination)
 		{
 			this.Source = source;
 			this.Destination = destination;

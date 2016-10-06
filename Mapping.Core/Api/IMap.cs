@@ -1,6 +1,6 @@
 ﻿namespace Mapping.Core.Api
 {
-	public interface IMapperConfiguration
+	public interface IMap
 	{
 		TDestination Map<TSource, TDestination> (TSource source) where TDestination : new();
 	}

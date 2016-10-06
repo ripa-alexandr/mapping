@@ -1,13 +1,13 @@
 ﻿using System;
 using Mapping.Core.Api;
 
-namespace Mapping.Core.MapperConfigurations
+namespace Mapping.Core.Maps
 {
-	public class CustomMapperConfiguration : IMapperConfiguration
+	public class CustomMap : IMap
 	{
 		private readonly object func;
 
-		public CustomMapperConfiguration(object func)
+		public CustomMap(object func)
 		{
 			this.func = func;
 		}

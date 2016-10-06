@@ -39,11 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\IMapperConfiguration.cs" />
-    <Compile Include="MapperConfigurations\CustomMapperConfiguration.cs" />
+    <Compile Include="Api\IMap.cs" />
+    <Compile Include="Maps\CustomMap.cs" />
     <Compile Include="Extensions\MemberInfoExtensions.cs" />
-    <Compile Include="MapperConfigurations\ReflectionMapperConfiguration.cs" />
-    <Compile Include="MapperConfigurations\MapperConfigurationItem.cs" />
+    <Compile Include="Maps\ReflectionMap.cs" />
+    <Compile Include="Maps\MapItem.cs" />
     <Compile Include="Mapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
