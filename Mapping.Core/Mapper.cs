@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Mapping.Core.Api;
 using Mapping.Core.Extensions;
+using Mapping.Core.MapperConfigurations;
 
 namespace Mapping.Core
 {
@@ -10,7 +12,7 @@ namespace Mapping.Core
 
 		private static readonly Object syncObj = new Object();
 		private static Mapper instance;
-		private readonly Dictionary<string, Map> mappings;
+		private readonly Dictionary<string, IMapperConfiguration> mappings;
 
 		public static Mapper Instance
 		{
@@ -33,7 +35,7 @@ namespace Mapping.Core
 
 		private Mapper ()
 		{
-			mappings = new Dictionary<string, Map>();
+			mappings = new Dictionary<string, IMapperConfiguration>();
 		}
 
 		#endregion
@@ -44,7 +46,14 @@ namespace Mapping.Core
 			var destinationType = typeof (TDestination);
 			string key = string.Concat(sourceType.FullName, destinationType.FullName);
 
-			Instance.mappings.Add(key, new Map(sourceType, destinationType));
+			Instance.mappings.Add(key, new ReflectionMapperConfiguration(sourceType, destinationType));
+		}
+
+		public static void ConvertUsing<TSource, TDestination> (Func<TSource, TDestination> func)
+		{
+			string key = string.Concat(typeof(TSource).FullName, typeof(TDestination).FullName);
+
+			Instance.mappings.Add(key, new CustomMapperConfiguration(func));
 		}
 
 		public static TDestination Map<TSource, TDestination> (TSource source) where TDestination : new() 
@@ -56,14 +65,7 @@ namespace Mapping.Core
 				throw new InvalidOperationException("Mapping does not exist. Call Initialize with appropriate configuration.");
 			}
 
-			TDestination destination = new TDestination();
-
-			foreach (var mapItem in Instance.mappings[key].MapItems)
-			{
-				var sourceValue = mapItem.Source.GetValue(source);
-
-				mapItem.Destination.SetValue(destination, sourceValue);
-			}
+			var destination = Instance.mappings[key].Map<TSource, TDestination>(source);
 
 			return destination;
 		}
