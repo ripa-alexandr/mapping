@@ -12,9 +12,13 @@ namespace Mapping.Core.Maps
 			this.func = func;
 		}
 
+		#region IMap implementation
+
 		public TDestination Map(TSource source)
 		{
 			return func(source);
 		}
+
+		#endregion
 	}
 }

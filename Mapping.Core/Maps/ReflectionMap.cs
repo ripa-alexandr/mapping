@@ -49,6 +49,8 @@ namespace Mapping.Core.Maps
 			}
 		}
 
+		#region IMap implementation
+
 		public TDestination Map(TSource source)
 		{
 			TDestination destination = new TDestination();
@@ -62,5 +64,7 @@ namespace Mapping.Core.Maps
 
 			return destination;
 		}
+
+		#endregion
 	}
 }
