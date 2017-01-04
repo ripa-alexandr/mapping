@@ -1,16 +1,24 @@
 ﻿using System.Reflection;
+using Mapping.Core.Extensions;
 
 namespace Mapping.Core.Maps
 {
 	public class MapItem
 	{
-		public MemberInfo Source { get; private set; }
-		public MemberInfo Destination { get; private set; }
+		private readonly MemberInfo sourceInfo;
+		private readonly MemberInfo destinationInfo;
 
-		public MapItem (MemberInfo source, MemberInfo destination)
+		public MapItem (MemberInfo sourceInfo, MemberInfo destinationInfo)
 		{
-			this.Source = source;
-			this.Destination = destination;
+			this.sourceInfo = sourceInfo;
+			this.destinationInfo = destinationInfo;
+		}
+
+		public void FillDestination (object source, object destination)
+		{
+			var sourceValue = sourceInfo.GetValue(source);
+
+			destinationInfo.SetValue(destination, sourceValue);
 		}
 	}
 }

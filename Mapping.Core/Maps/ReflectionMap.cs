@@ -57,9 +57,7 @@ namespace Mapping.Core.Maps
 
 			foreach (var mapItem in MapItems)
 			{
-				var sourceValue = mapItem.Source.GetValue(source);
-
-				mapItem.Destination.SetValue(destination, sourceValue);
+				mapItem.FillDestination(source, destination);
 			}
 
 			return destination;
