@@ -14,24 +14,14 @@ namespace Mapping.Core
 			mappings = new Dictionary<string, object>();
 		}
 
-		public static void CreateMap<TSource, TDestination> () 
-			where TDestination : new()
+		public static void CreateMap<TSource, TDestination> () where TDestination : new()
 		{
 			var key = GenerateKey<TSource, TDestination>();
 
 			mappings.Add(key, new ReflectionMap<TSource, TDestination>());
 		}
 
-		public static void CreateMapUsing<TSource, TDestination> (Func<TSource, TDestination> func) 
-			where TDestination : new()
-		{
-			var key = GenerateKey<TSource, TDestination>();
-
-			mappings.Add(key, new CustomMap<TSource, TDestination>(func));
-		}
-
-		public static TDestination Map<TSource, TDestination> (TSource source) 
-			where TDestination : new() 
+		public static TDestination Map<TSource, TDestination> (TSource source) where TDestination : new() 
 		{
 			var key = GenerateKey<TSource, TDestination>();
 

@@ -10,32 +10,32 @@ namespace Mapping.Core.Maps
 {
 	public class ReflectionMap<TSource, TDestination> : IMap<TSource, TDestination> where TDestination : new()
 	{
-		public Type SourceType { get; private set; }
-		public Type DestinationType { get; private set; }
-		public ICollection<MapItem> MapItems { get; private set; }
+		private readonly Type sourceType;
+		private readonly Type destinationType;
+		private readonly ICollection<MapItem> mapItems;
 		
 		public ReflectionMap ()
 		{
-			this.SourceType = typeof(TSource);
-			this.DestinationType = typeof(TDestination);
-			this.MapItems = new Collection<MapItem>();
+			this.sourceType = typeof(TSource);
+			this.destinationType = typeof(TDestination);
+			this.mapItems = new Collection<MapItem>();
 
-			this.CreateMap();
+			this.Initialize();
 		}
 
-		private void CreateMap ()
+		private void Initialize ()
 		{
 			var bindingFlags = BindingFlags.Public | BindingFlags.Instance;
 
-			var sources = SourceType.GetProperties(bindingFlags)
+			var sources = sourceType.GetProperties(bindingFlags)
 				.Where(i => i.CanRead)
 				.Cast<MemberInfo>()
-				.Concat(SourceType.GetFields(bindingFlags));
+				.Concat(sourceType.GetFields(bindingFlags));
 
-			var destinations = DestinationType.GetProperties(bindingFlags)
+			var destinations = destinationType.GetProperties(bindingFlags)
 				.Where(i => i.CanWrite)
 				.Cast<MemberInfo>()
-				.Concat(DestinationType.GetFields(bindingFlags));
+				.Concat(destinationType.GetFields(bindingFlags));
 
 			foreach (MemberInfo destination in destinations)
 			{
@@ -44,7 +44,7 @@ namespace Mapping.Core.Maps
 				// TODO: add logic for check convertible
 				if (source != null && destination.GetValueType() == source.GetValueType())
 				{
-					MapItems.Add(new MapItem(source, destination));
+					mapItems.Add(new MapItem(source, destination));
 				}
 			}
 		}
@@ -55,7 +55,7 @@ namespace Mapping.Core.Maps
 		{
 			TDestination destination = new TDestination();
 
-			foreach (var mapItem in MapItems)
+			foreach (var mapItem in mapItems)
 			{
 				mapItem.FillDestination(source, destination);
 			}
