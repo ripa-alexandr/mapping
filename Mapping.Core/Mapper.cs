@@ -6,7 +6,7 @@ namespace Mapping.Core
 {
 	public static class Mapper
 	{
-		private static Dictionary<string, object> mappings;
+		private static IDictionary<string, object> mappings;
 
 		public static void Initialize(IMapperConfiguration configuration)
 		{

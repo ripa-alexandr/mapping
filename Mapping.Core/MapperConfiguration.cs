@@ -20,7 +20,7 @@ namespace Mapping.Core
 
 		#region IMapperConfiguration implementation
 
-		public Dictionary<string, object> Initialize()
+		public IDictionary<string, object> Initialize()
 		{
 			foreach (var mapping in mappings)
 			{
@@ -30,11 +30,14 @@ namespace Mapping.Core
 			return mappings;
 		}
 
-		public void CreateMap<TSource, TDestination>() where TDestination : new()
+		public IMap<TSource, TDestination> CreateMap<TSource, TDestination>() where TDestination : new()
 		{
 			var key = GenerateKey<TSource, TDestination>();
+			var map = new ReflectionMap<TSource, TDestination>();
 
-			mappings.Add(key, new ReflectionMap<TSource, TDestination>());
+			mappings.Add(key, map);
+
+			return map;
 		}
 
 		#endregion

@@ -20,8 +20,9 @@ namespace Mapping.Console
 			};
 
 			var config = new MapperConfiguration();
-			config.CreateMap<A, B>();
-			config.CreateMap<B, A>();
+			config.CreateMap<A, B>()
+				.Ignore(i => i.Age)
+				.ForMember(i => i.MiddleName, i => i.Age.ToString());
 
 			Mapper.Initialize(config);
 			var b = Mapper.Map<A, B>(a);

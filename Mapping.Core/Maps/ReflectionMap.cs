@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using Mapping.Core.Api;
 using Mapping.Core.Extensions;
@@ -64,6 +65,22 @@ namespace Mapping.Core.Maps
 
 			return destination;
 		}
+
+		public IMap<TSource, TDestination> Ignore<TMember>(Expression<Func<TDestination, TMember>> expr)
+		{
+			//var memberName = GetMemberName(expr);
+
+			//this.CreateMap();
+			//ignoreList.Add(memberName);
+
+			return this;
+		}
+
+		public IMap<TSource, TDestination> ForMember<TMember>(Expression<Func<TDestination, TMember>> itemFunc, Func<TSource, TMember> convertFunc)
+		{
+			return this;
+		}
+
 
 		#endregion
 	}
