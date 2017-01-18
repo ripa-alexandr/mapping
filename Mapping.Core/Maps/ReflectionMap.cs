@@ -8,7 +8,7 @@ using Mapping.Core.Extensions;
 
 namespace Mapping.Core.Maps
 {
-	public class ReflectionMap<TSource, TDestination> : IMap<TSource, TDestination> where TDestination : new()
+	public class ReflectionMap<TSource, TDestination> : IMapInitialize, IMap<TSource, TDestination> where TDestination : new()
 	{
 		private readonly Type sourceType;
 		private readonly Type destinationType;
@@ -19,11 +19,11 @@ namespace Mapping.Core.Maps
 			this.sourceType = typeof(TSource);
 			this.destinationType = typeof(TDestination);
 			this.mapItems = new Collection<MapItem>();
-
-			this.Initialize();
 		}
 
-		private void Initialize ()
+		#region IMapInitialize implementation
+
+		public void Initialize ()
 		{
 			var bindingFlags = BindingFlags.Public | BindingFlags.Instance;
 
@@ -48,6 +48,8 @@ namespace Mapping.Core.Maps
 				}
 			}
 		}
+
+		#endregion
 
 		#region IMap implementation
 

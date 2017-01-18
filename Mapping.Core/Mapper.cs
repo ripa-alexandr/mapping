@@ -1,24 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using Mapping.Core.Api;
-using Mapping.Core.Maps;
 
 namespace Mapping.Core
 {
 	public static class Mapper
 	{
-		private static readonly Dictionary<string, object> mappings;
+		private static Dictionary<string, object> mappings;
 
-		static Mapper()
+		public static void Initialize(IMapperConfiguration configuration)
 		{
-			mappings = new Dictionary<string, object>();
-		}
-
-		public static void CreateMap<TSource, TDestination> () where TDestination : new()
-		{
-			var key = GenerateKey<TSource, TDestination>();
-
-			mappings.Add(key, new ReflectionMap<TSource, TDestination>());
+			mappings = configuration.Initialize();
 		}
 
 		public static TDestination Map<TSource, TDestination> (TSource source) where TDestination : new() 
