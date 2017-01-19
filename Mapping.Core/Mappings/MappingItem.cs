@@ -1,14 +1,14 @@
 ﻿using System.Reflection;
 using Mapping.Core.Extensions;
 
-namespace Mapping.Core.Maps
+namespace Mapping.Core.Mappings
 {
-	public class MapItem
+	public class MappingItem
 	{
 		private readonly MemberInfo sourceInfo;
 		private readonly MemberInfo destinationInfo;
 
-		public MapItem (MemberInfo sourceInfo, MemberInfo destinationInfo)
+		public MappingItem (MemberInfo sourceInfo, MemberInfo destinationInfo)
 		{
 			this.sourceInfo = sourceInfo;
 			this.destinationInfo = destinationInfo;

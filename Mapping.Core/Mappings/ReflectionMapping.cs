@@ -7,22 +7,22 @@ using System.Reflection;
 using Mapping.Core.Api;
 using Mapping.Core.Extensions;
 
-namespace Mapping.Core.Maps
+namespace Mapping.Core.Mappings
 {
-	public class ReflectionMap<TSource, TDestination> : IMapInitialize, IMap<TSource, TDestination> where TDestination : new()
+	public class ReflectionMapping<TSource, TDestination> : IMappingInitialize, IMappingConfiguration<TSource, TDestination>, IMapping<TSource, TDestination> where TDestination : new()
 	{
 		private readonly Type sourceType;
 		private readonly Type destinationType;
-		private readonly ICollection<MapItem> mapItems;
+		private readonly ICollection<MappingItem> mappingItems;
 		
-		public ReflectionMap ()
+		public ReflectionMapping ()
 		{
 			this.sourceType = typeof(TSource);
 			this.destinationType = typeof(TDestination);
-			this.mapItems = new Collection<MapItem>();
+			this.mappingItems = new Collection<MappingItem>();
 		}
 
-		#region IMapInitialize implementation
+		#region IMappingInitialize implementation
 
 		public void Initialize ()
 		{
@@ -45,42 +45,40 @@ namespace Mapping.Core.Maps
 				// TODO: add logic for check convertible
 				if (source != null && destination.GetValueType() == source.GetValueType())
 				{
-					mapItems.Add(new MapItem(source, destination));
+					mappingItems.Add(new MappingItem(source, destination));
 				}
 			}
 		}
 
 		#endregion
 
-		#region IMap implementation
+		#region IMappingConfiguration implementation
+
+		public IMappingConfiguration<TSource, TDestination> Ignore<TMember>(Expression<Func<TDestination, TMember>> expr)
+		{
+			return this;
+		}
+
+		public IMappingConfiguration<TSource, TDestination> ForMember<TMember>(Expression<Func<TDestination, TMember>> itemFunc, Func<TSource, TMember> convertFunc)
+		{
+			return this;
+		}
+
+		#endregion
+
+		#region IMapping implementation
 
 		public TDestination Map(TSource source)
 		{
 			TDestination destination = new TDestination();
 
-			foreach (var mapItem in mapItems)
+			foreach (var mapItem in mappingItems)
 			{
 				mapItem.FillDestination(source, destination);
 			}
 
 			return destination;
 		}
-
-		public IMap<TSource, TDestination> Ignore<TMember>(Expression<Func<TDestination, TMember>> expr)
-		{
-			//var memberName = GetMemberName(expr);
-
-			//this.CreateMap();
-			//ignoreList.Add(memberName);
-
-			return this;
-		}
-
-		public IMap<TSource, TDestination> ForMember<TMember>(Expression<Func<TDestination, TMember>> itemFunc, Func<TSource, TMember> convertFunc)
-		{
-			return this;
-		}
-
 
 		#endregion
 	}

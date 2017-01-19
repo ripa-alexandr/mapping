@@ -1,6 +1,6 @@
 ﻿namespace Mapping.Core.Api
 {
-	public interface IMapInitialize
+	public interface IMappingInitialize
 	{
 		void Initialize();
 	}

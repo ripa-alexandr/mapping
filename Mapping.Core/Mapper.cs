@@ -8,7 +8,7 @@ namespace Mapping.Core
 	{
 		private static IDictionary<string, object> mappings;
 
-		public static void Initialize(IMapperConfiguration configuration)
+		public static void Initialize(MapperConfiguration configuration)
 		{
 			mappings = configuration.Initialize();
 		}
@@ -22,7 +22,7 @@ namespace Mapping.Core
 				throw new InvalidOperationException("Mapping does not exist. Call Initialize with appropriate configuration.");
 			}
 
-			var mapping = (IMap<TSource, TDestination>)mappings[key];
+			var mapping = (IMapping<TSource, TDestination>)mappings[key];
 			var destination = mapping.Map(source);
 
 			return destination;

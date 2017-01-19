@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using Mapping.Core.Api;
-using Mapping.Core.Maps;
+using Mapping.Core.Mappings;
 
 namespace Mapping.Core
 {
-	public class MapperConfiguration : IMapperConfiguration
+	public class MapperConfiguration
 	{
 		private readonly Dictionary<string, object> mappings;
 
@@ -24,16 +24,16 @@ namespace Mapping.Core
 		{
 			foreach (var mapping in mappings)
 			{
-				((IMapInitialize)mapping.Value).Initialize();
+				((IMappingInitialize)mapping.Value).Initialize();
 			}
 
 			return mappings;
 		}
 
-		public IMap<TSource, TDestination> CreateMap<TSource, TDestination>() where TDestination : new()
+		public IMappingConfiguration<TSource, TDestination> CreateMap<TSource, TDestination>() where TDestination : new()
 		{
 			var key = GenerateKey<TSource, TDestination>();
-			var map = new ReflectionMap<TSource, TDestination>();
+			var map = new ReflectionMapping<TSource, TDestination>();
 
 			mappings.Add(key, map);
 
