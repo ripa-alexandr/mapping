@@ -12,23 +12,6 @@ namespace Mapping.Core
 		{
 			mappings = new Dictionary<string, object>();
 		}
-		
-		private string GenerateKey<TSource, TDestination>()
-		{
-			return string.Concat(typeof(TSource).FullName, typeof(TDestination).FullName);
-		}
-
-		#region IMapperConfiguration implementation
-
-		public IDictionary<string, object> Initialize()
-		{
-			foreach (var mapping in mappings)
-			{
-				((IMappingInitialize)mapping.Value).Initialize();
-			}
-
-			return mappings;
-		}
 
 		public IMappingConfiguration<TSource, TDestination> CreateMap<TSource, TDestination>() where TDestination : new()
 		{
@@ -40,6 +23,19 @@ namespace Mapping.Core
 			return mapping;
 		}
 
-		#endregion
+		internal IDictionary<string, object> Initialize()
+		{
+			foreach (var mapping in mappings)
+			{
+				((IMappingInitialize)mapping.Value).Initialize();
+			}
+
+			return mappings;
+		}
+
+		private string GenerateKey<TSource, TDestination>()
+		{
+			return string.Concat(typeof(TSource).FullName, typeof(TDestination).FullName);
+		}
 	}
 }
