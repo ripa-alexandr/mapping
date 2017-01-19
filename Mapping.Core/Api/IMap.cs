@@ -7,8 +7,8 @@ namespace Mapping.Core.Api
 	{
 		TDestination Map (TSource source);
 
-		IMap<TSource, TDestination> Ignore<TMember> (Expression<Func<TDestination, TMember>> expr);
+		IMap<TSource, TDestination> Ignore<TMember> (Expression<Func<TDestination, TMember>> item);
 
-		IMap<TSource, TDestination> ForMember<TMember> (Expression<Func<TDestination, TMember>> itemFunc, Func<TSource, TMember> convertFunc);
+		IMap<TSource, TDestination> ForMember<TMember> (Expression<Func<TDestination, TMember>> item, Func<TSource, TMember> convert);
 	}
 }
