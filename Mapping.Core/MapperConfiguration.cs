@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Mapping.Core.Api;
 using Mapping.Core.Mappings;
 
@@ -23,11 +24,19 @@ namespace Mapping.Core
 			return mapping;
 		}
 
+		public void CreateCustomMap<TSource, TDestination>(Func<TSource, TDestination> func) where TDestination : new()
+		{
+			var key = GenerateKey<TSource, TDestination>();
+			var mapping = new CustomMapping<TSource, TDestination>(func);
+
+			mappings.Add(key, mapping);
+		}
+
 		internal IDictionary<string, object> Initialize()
 		{
 			foreach (var mapping in mappings)
 			{
-				((IInitializeMapping)mapping.Value).Initialize();
+				(mapping.Value as IInitializeMapping)?.Initialize();
 			}
 
 			return mappings;
