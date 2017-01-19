@@ -22,7 +22,7 @@ namespace Mapping.Core.Mappings
 			this.mappingItems = new Collection<MappingItem>();
 		}
 
-		#region IMappingInitialize
+		#region IInitializeMapping
 
 		public void Initialize ()
 		{
@@ -52,7 +52,7 @@ namespace Mapping.Core.Mappings
 
 		#endregion
 
-		#region IMappingConfiguration
+		#region IConfigurationMapping
 
 		public IConfigurationMapping<TSource, TDestination> Ignore<TMember>(Expression<Func<TDestination, TMember>> expr)
 		{
