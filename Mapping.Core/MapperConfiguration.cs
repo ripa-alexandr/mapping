@@ -13,7 +13,7 @@ namespace Mapping.Core
 			mappings = new Dictionary<string, object>();
 		}
 
-		public IMappingConfiguration<TSource, TDestination> CreateMap<TSource, TDestination>() where TDestination : new()
+		public IConfigurationMapping<TSource, TDestination> CreateMap<TSource, TDestination>() where TDestination : new()
 		{
 			var key = GenerateKey<TSource, TDestination>();
 			var mapping = new ReflectionMapping<TSource, TDestination>();
@@ -27,7 +27,7 @@ namespace Mapping.Core
 		{
 			foreach (var mapping in mappings)
 			{
-				((IMappingInitialize)mapping.Value).Initialize();
+				((IInitializeMapping)mapping.Value).Initialize();
 			}
 
 			return mappings;

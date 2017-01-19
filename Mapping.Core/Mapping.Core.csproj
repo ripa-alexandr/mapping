@@ -40,8 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\IMapping.cs" />
-    <Compile Include="Api\IMappingConfiguration.cs" />
-    <Compile Include="Api\IMappingInitialize.cs" />
+    <Compile Include="Api\IConfigurationMapping.cs" />
+    <Compile Include="Api\IInitializeMapping.cs" />
     <Compile Include="Mappings\CustomMapping.cs" />
     <Compile Include="Extensions\MemberInfoExtensions.cs" />
     <Compile Include="MapperConfiguration.cs" />

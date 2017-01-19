@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO.MemoryMappedFiles;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Mapping.Core;
+using Mapping.Core.Mappings;
 
 namespace Mapping.Console
 {
@@ -18,7 +20,7 @@ namespace Mapping.Console
 				LastName = "House",
 				Age = 39
 			};
-
+			
 			var config = new MapperConfiguration();
 			config.CreateMap<A, B>()
 				.Ignore(i => i.Age)

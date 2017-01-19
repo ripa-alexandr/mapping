@@ -3,16 +3,16 @@ using Mapping.Core.Api;
 
 namespace Mapping.Core.Mappings
 {
-	public class CustomMapping<TSource, TDestination> : IMapping<TSource, TDestination> where TDestination : new()
+	internal class CustomMapping<TSource, TDestination> : IMapping<TSource, TDestination> where TDestination : new()
 	{
 		private readonly Func<TSource, TDestination> func;
 
-		public CustomMapping(Func<TSource, TDestination> func)
+		internal CustomMapping(Func<TSource, TDestination> func)
 		{
 			this.func = func;
 		}
 
-		#region IMapping implementation
+		#region IMapping
 
 		public TDestination Map(TSource source)
 		{

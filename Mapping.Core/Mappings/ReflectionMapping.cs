@@ -9,20 +9,20 @@ using Mapping.Core.Extensions;
 
 namespace Mapping.Core.Mappings
 {
-	public class ReflectionMapping<TSource, TDestination> : IMappingInitialize, IMappingConfiguration<TSource, TDestination>, IMapping<TSource, TDestination> where TDestination : new()
+	internal class ReflectionMapping<TSource, TDestination> : IInitializeMapping, IConfigurationMapping<TSource, TDestination>, IMapping<TSource, TDestination> where TDestination : new()
 	{
 		private readonly Type sourceType;
 		private readonly Type destinationType;
 		private readonly ICollection<MappingItem> mappingItems;
-		
-		public ReflectionMapping ()
+
+		internal ReflectionMapping ()
 		{
 			this.sourceType = typeof(TSource);
 			this.destinationType = typeof(TDestination);
 			this.mappingItems = new Collection<MappingItem>();
 		}
 
-		#region IMappingInitialize implementation
+		#region IMappingInitialize
 
 		public void Initialize ()
 		{
@@ -52,21 +52,21 @@ namespace Mapping.Core.Mappings
 
 		#endregion
 
-		#region IMappingConfiguration implementation
+		#region IMappingConfiguration
 
-		public IMappingConfiguration<TSource, TDestination> Ignore<TMember>(Expression<Func<TDestination, TMember>> expr)
+		public IConfigurationMapping<TSource, TDestination> Ignore<TMember>(Expression<Func<TDestination, TMember>> expr)
 		{
 			return this;
 		}
 
-		public IMappingConfiguration<TSource, TDestination> ForMember<TMember>(Expression<Func<TDestination, TMember>> itemFunc, Func<TSource, TMember> convertFunc)
+		public IConfigurationMapping<TSource, TDestination> ForMember<TMember>(Expression<Func<TDestination, TMember>> itemFunc, Func<TSource, TMember> convertFunc)
 		{
 			return this;
 		}
 
 		#endregion
 
-		#region IMapping implementation
+		#region IMapping
 
 		public TDestination Map(TSource source)
 		{
