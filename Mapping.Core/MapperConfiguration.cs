@@ -33,11 +33,11 @@ namespace Mapping.Core
 		public IMappingConfiguration<TSource, TDestination> CreateMap<TSource, TDestination>() where TDestination : new()
 		{
 			var key = GenerateKey<TSource, TDestination>();
-			var map = new ReflectionMapping<TSource, TDestination>();
+			var mapping = new ReflectionMapping<TSource, TDestination>();
 
-			mappings.Add(key, map);
+			mappings.Add(key, mapping);
 
-			return map;
+			return mapping;
 		}
 
 		#endregion
