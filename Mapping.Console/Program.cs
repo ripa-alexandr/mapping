@@ -26,8 +26,15 @@ namespace Mapping.Console
 				.Ignore(i => i.Age)
 				.ForMember(i => i.MiddleName, i => i.Age.ToString());
 
+			config.CreateCustomMap<B, A>(i => new A
+			{
+				FirstName = i.FirstName,
+				LastName = i.LastName
+			});
+
 			Mapper.Initialize(config);
-			var b = Mapper.Map<A, B>(a);
+			var b1 = Mapper.Map<A, B>(a);
+			var b2 = Mapper.Map<B, A>(b1);
 
 			System.Console.ReadLine();
 		}
