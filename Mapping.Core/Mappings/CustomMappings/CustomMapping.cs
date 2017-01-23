@@ -1,7 +1,7 @@
 ﻿using System;
 using Mapping.Core.Api;
 
-namespace Mapping.Core.Mappings
+namespace Mapping.Core.Mappings.CustomMappings
 {
 	internal class CustomMapping<TSource, TDestination> : IMapping<TSource, TDestination> where TDestination : new()
 	{

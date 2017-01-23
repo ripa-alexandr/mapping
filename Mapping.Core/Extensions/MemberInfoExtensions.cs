@@ -3,9 +3,9 @@ using System.Reflection;
 
 namespace Mapping.Core.Extensions
 {
-	public static class MemberInfoExtensions
+	internal static class MemberInfoExtensions
 	{
-		public static object GetValue (this MemberInfo memberInfo, object obj)
+		internal static object GetValue (this MemberInfo memberInfo, object obj)
 		{
 			switch (memberInfo.MemberType)
 			{
@@ -20,7 +20,7 @@ namespace Mapping.Core.Extensions
 			}
 		}
 
-		public static void SetValue (this MemberInfo memberInfo, object obj, object value)
+		internal static void SetValue (this MemberInfo memberInfo, object obj, object value)
 		{
 			switch (memberInfo.MemberType)
 			{
@@ -37,7 +37,7 @@ namespace Mapping.Core.Extensions
 			}
 		}
 
-		public static Type GetValueType (this MemberInfo memberInfo)
+		internal static Type GetValueType (this MemberInfo memberInfo)
 		{
 			switch (memberInfo.MemberType)
 			{

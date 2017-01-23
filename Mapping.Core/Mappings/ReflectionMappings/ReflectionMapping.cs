@@ -7,21 +7,23 @@ using System.Reflection;
 using Mapping.Core.Api;
 using Mapping.Core.Extensions;
 
-namespace Mapping.Core.Mappings
+namespace Mapping.Core.Mappings.ReflectionMappings
 {
 	internal class ReflectionMapping<TSource, TDestination> : IInitializeMapping, IConfigurationMapping<TSource, TDestination>, IMapping<TSource, TDestination> where TDestination : new()
 	{
 		private readonly Type sourceType;
 		private readonly Type destinationType;
-		private readonly ICollection<MappingItem> mappingItems;
+		private readonly ICollection<BaseMappingItem> mappings;
 		private readonly ICollection<string> ignoreItems;
+		private readonly IDictionary<string, Func<object, object>> converters; 
 
 		internal ReflectionMapping ()
 		{
 			this.sourceType = typeof(TSource);
 			this.destinationType = typeof(TDestination);
-			this.mappingItems = new Collection<MappingItem>();
+			this.mappings = new Collection<BaseMappingItem>();
 			this.ignoreItems = new Collection<string>();
+			this.converters = new Dictionary<string, Func<object, object>>();
 		}
 
 		#region IInitializeMapping
@@ -38,18 +40,31 @@ namespace Mapping.Core.Mappings
 			var destinations = destinationType.GetProperties(bindingFlags)
 				.Where(i => i.CanWrite)
 				.Cast<MemberInfo>()
-				.Concat(destinationType.GetFields(bindingFlags))
-				.Where(i => !ignoreItems.Contains(i.Name));
+				.Concat(destinationType.GetFields(bindingFlags));
 
 			foreach (MemberInfo destination in destinations)
 			{
 				var source = sources.FirstOrDefault(i => i.Name.Equals(destination.Name));
 
-				// TODO: add logic for check convertible
-				if (source != null && destination.GetValueType() == source.GetValueType())
-				{
-					mappingItems.Add(new MappingItem(source, destination));
-				}
+				AddMapping(source, destination);
+			}
+		}
+
+		private void AddMapping (MemberInfo source, MemberInfo destination)
+		{
+			// check on null and ignore
+			if (source == null || ignoreItems.Contains(destination.Name))
+			{
+				return;
+			}
+
+			if (converters.ContainsKey(destination.Name))
+			{
+				mappings.Add(new CustomMappingItem(source, destination, converters[destination.Name]));
+			}
+			else if (destination.GetValueType() == source.GetValueType())
+			{
+				mappings.Add(new ReflectionMappingItem(source, destination));
 			}
 		}
 
@@ -57,17 +72,21 @@ namespace Mapping.Core.Mappings
 
 		#region IConfigurationMapping
 
-		public IConfigurationMapping<TSource, TDestination> Ignore<TMember>(Expression<Func<TDestination, TMember>> item)
+		public IConfigurationMapping<TSource, TDestination> Ignore<TMember> (Expression<Func<TDestination, TMember>> item)
 		{
-			var mamberName = GetMemberName(item);
+			var memberName = GetMemberName(item);
 
-			ignoreItems.Add(mamberName);
+			ignoreItems.Add(memberName);
 
 			return this;
 		}
 
-		public IConfigurationMapping<TSource, TDestination> ForMember<TMember> (Expression<Func<TDestination, TMember>> item, Func<TSource, TMember> convert)
+		public IConfigurationMapping<TSource, TDestination> ForMember<TMember> (Expression<Func<TDestination, TMember>> item, Func<TSource, TMember> converter)
 		{
+			var memberName = GetMemberName(item);
+
+			//converters.Add(memberName, converter);
+
 			return this;
 		}
 
@@ -84,7 +103,7 @@ namespace Mapping.Core.Mappings
 		{
 			TDestination destination = new TDestination();
 
-			foreach (var mapItem in mappingItems)
+			foreach (var mapItem in mappings)
 			{
 				mapItem.FillDestination(source, destination);
 			}

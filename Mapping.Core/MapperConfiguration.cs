@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Mapping.Core.Api;
-using Mapping.Core.Mappings;
+using Mapping.Core.Mappings.CustomMappings;
+using Mapping.Core.Mappings.ReflectionMappings;
 
 namespace Mapping.Core
 {

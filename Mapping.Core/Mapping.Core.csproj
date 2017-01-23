@@ -42,11 +42,13 @@
     <Compile Include="Api\IMapping.cs" />
     <Compile Include="Api\IConfigurationMapping.cs" />
     <Compile Include="Api\IInitializeMapping.cs" />
-    <Compile Include="Mappings\CustomMapping.cs" />
+    <Compile Include="Mappings\CustomMappings\CustomMapping.cs" />
     <Compile Include="Extensions\MemberInfoExtensions.cs" />
     <Compile Include="MapperConfiguration.cs" />
-    <Compile Include="Mappings\ReflectionMapping.cs" />
-    <Compile Include="Mappings\MappingItem.cs" />
+    <Compile Include="Mappings\ReflectionMappings\BaseMappingItem.cs" />
+    <Compile Include="Mappings\ReflectionMappings\ReflectionMapping.cs" />
+    <Compile Include="Mappings\ReflectionMappings\CustomMappingItem.cs" />
+    <Compile Include="Mappings\ReflectionMappings\ReflectionMappingItem.cs" />
     <Compile Include="Mapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
