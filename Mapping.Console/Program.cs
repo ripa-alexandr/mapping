@@ -23,7 +23,7 @@ namespace Mapping.Console
 			
 			var config = new MapperConfiguration();
 			config.CreateMap<A, B>()
-				.Ignore(i => i.Age)
+				.Ignore(i => i.FirstName)
 				.ForMember(i => i.MiddleName, i => i.Age.ToString());
 
 			config.CreateCustomMap<B, A>(i => new A

@@ -14,12 +14,14 @@ namespace Mapping.Core.Mappings
 		private readonly Type sourceType;
 		private readonly Type destinationType;
 		private readonly ICollection<MappingItem> mappingItems;
+		private readonly ICollection<string> ignoreItems;
 
 		internal ReflectionMapping ()
 		{
 			this.sourceType = typeof(TSource);
 			this.destinationType = typeof(TDestination);
 			this.mappingItems = new Collection<MappingItem>();
+			this.ignoreItems = new Collection<string>();
 		}
 
 		#region IInitializeMapping
@@ -36,7 +38,8 @@ namespace Mapping.Core.Mappings
 			var destinations = destinationType.GetProperties(bindingFlags)
 				.Where(i => i.CanWrite)
 				.Cast<MemberInfo>()
-				.Concat(destinationType.GetFields(bindingFlags));
+				.Concat(destinationType.GetFields(bindingFlags))
+				.Where(i => !ignoreItems.Contains(i.Name));
 
 			foreach (MemberInfo destination in destinations)
 			{
@@ -54,14 +57,23 @@ namespace Mapping.Core.Mappings
 
 		#region IConfigurationMapping
 
-		public IConfigurationMapping<TSource, TDestination> Ignore<TMember>(Expression<Func<TDestination, TMember>> expr)
+		public IConfigurationMapping<TSource, TDestination> Ignore<TMember>(Expression<Func<TDestination, TMember>> item)
+		{
+			var mamberName = GetMamberName(item);
+
+			ignoreItems.Add(mamberName);
+
+			return this;
+		}
+
+		public IConfigurationMapping<TSource, TDestination> ForMember<TMember> (Expression<Func<TDestination, TMember>> item, Func<TSource, TMember> convert)
 		{
 			return this;
 		}
 
-		public IConfigurationMapping<TSource, TDestination> ForMember<TMember>(Expression<Func<TDestination, TMember>> itemFunc, Func<TSource, TMember> convertFunc)
+		private string GetMamberName<TMamber> (Expression<Func<TDestination, TMamber>> item)
 		{
-			return this;
+			return ((MemberExpression)item.Body).Member.Name; ;
 		}
 
 		#endregion
