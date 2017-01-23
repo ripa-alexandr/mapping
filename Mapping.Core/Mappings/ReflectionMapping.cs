@@ -59,7 +59,7 @@ namespace Mapping.Core.Mappings
 
 		public IConfigurationMapping<TSource, TDestination> Ignore<TMember>(Expression<Func<TDestination, TMember>> item)
 		{
-			var mamberName = GetMamberName(item);
+			var mamberName = GetMemberName(item);
 
 			ignoreItems.Add(mamberName);
 
@@ -71,7 +71,7 @@ namespace Mapping.Core.Mappings
 			return this;
 		}
 
-		private string GetMamberName<TMamber> (Expression<Func<TDestination, TMamber>> item)
+		private string GetMemberName<TMamber> (Expression<Func<TDestination, TMamber>> item)
 		{
 			return ((MemberExpression)item.Body).Member.Name; ;
 		}
