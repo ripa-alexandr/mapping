@@ -60,7 +60,7 @@ namespace Mapping.Core.Mappings.ReflectionMappings
 
 			if (converters.ContainsKey(destination.Name))
 			{
-				mappings.Add(new CustomMappingItem(source, destination, converters[destination.Name]));
+				mappings.Add(new CustomMappingItem(destination, converters[destination.Name]));
 			}
 			else if (destination.GetValueType() == source.GetValueType())
 			{
@@ -85,7 +85,7 @@ namespace Mapping.Core.Mappings.ReflectionMappings
 		{
 			var memberName = GetMemberName(item);
 
-			//converters.Add(memberName, converter);
+			converters.Add(memberName, i => converter((TSource)i));
 
 			return this;
 		}
