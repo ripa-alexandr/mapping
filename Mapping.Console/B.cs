@@ -14,6 +14,6 @@ namespace Mapping.Console
 
 		public string LastName { get; set; }
 
-		public string Age;
+		public int Age;
 	}
 }

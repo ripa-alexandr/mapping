@@ -18,13 +18,13 @@ namespace Mapping.Console
 			{
 				FirstName = "Gregory",
 				LastName = "House",
-				Age = 39
+				Age = "39"
 			};
 			
 			var config = new MapperConfiguration();
 			config.CreateMap<A, B>()
 				.Ignore(i => i.FirstName)
-				.ForMember(i => i.MiddleName, i => i.Age.ToString());
+				.ForMember(i => i.Age, i => int.Parse(i.Age));
 
 			config.CreateCustomMap<B, A>(i => new A
 			{
