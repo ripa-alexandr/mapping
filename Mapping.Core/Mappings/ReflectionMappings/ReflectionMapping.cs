@@ -90,7 +90,7 @@ namespace Mapping.Core.Mappings.ReflectionMappings
 			return this;
 		}
 
-		private string GetMemberName<TMamber> (Expression<Func<TDestination, TMamber>> item)
+		private string GetMemberName<TMember> (Expression<Func<TDestination, TMember>> item)
 		{
 			return ((MemberExpression)item.Body).Member.Name; ;
 		}
