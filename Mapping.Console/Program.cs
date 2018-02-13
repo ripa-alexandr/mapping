@@ -18,7 +18,8 @@ namespace Mapping.Console
 			{
 				FirstName = "Gregory",
 				LastName = "House",
-				Age = "39"
+				Age = "39",
+				SecondAge = new C()
 			};
 			
 			var config = new MapperConfiguration();
@@ -31,6 +32,8 @@ namespace Mapping.Console
 				FirstName = i.FirstName,
 				LastName = i.LastName
 			});
+
+			config.CreateMap<C, D>();
 
 			Mapper.Initialize(config);
 			var b1 = Mapper.Map<A, B>(a);

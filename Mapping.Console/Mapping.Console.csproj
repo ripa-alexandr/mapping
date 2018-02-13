@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="D.cs" />
+    <Compile Include="C.cs" />
     <Compile Include="A.cs" />
     <Compile Include="B.cs" />
     <Compile Include="Program.cs" />
