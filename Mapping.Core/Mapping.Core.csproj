@@ -46,8 +46,9 @@
     <Compile Include="Extensions\MemberInfoExtensions.cs" />
     <Compile Include="MapperConfiguration.cs" />
     <Compile Include="Mappings\ReflectionMappings\BaseMappingItem.cs" />
-    <Compile Include="Mappings\ReflectionMappings\ReflectionMapping.cs" />
     <Compile Include="Mappings\ReflectionMappings\CustomMappingItem.cs" />
+    <Compile Include="Mappings\ReflectionMappings\ReflectionMapping.cs" />
+    <Compile Include="Mappings\ReflectionMappings\ConvertMappingItem.cs" />
     <Compile Include="Mappings\ReflectionMappings\ReflectionMappingItem.cs" />
     <Compile Include="Mapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

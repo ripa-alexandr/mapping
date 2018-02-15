@@ -9,19 +9,21 @@ using Mapping.Core.Extensions;
 
 namespace Mapping.Core.Mappings.ReflectionMappings
 {
-	internal class ReflectionMapping<TSource, TDestination> : IInitializeMapping, IConfigurationMapping<TSource, TDestination>, IMapping<TSource, TDestination> where TDestination : new()
+	internal class ReflectionMapping<TSource, TDestination> : IInitializeMapping, IConfigurationMapping<TSource, TDestination>, IMapping where TDestination : new()
 	{
+		private readonly Dictionary<string, IMapping> mappings;
 		private readonly Type sourceType;
 		private readonly Type destinationType;
-		private readonly ICollection<BaseMappingItem> mappings;
+		private readonly ICollection<BaseMappingItem> mappingItems;
 		private readonly ICollection<string> ignoreItems;
 		private readonly IDictionary<string, Func<object, object>> converters; 
 
-		internal ReflectionMapping ()
+		internal ReflectionMapping (Dictionary<string, IMapping> mappings)
 		{
+			this.mappings = mappings;
 			this.sourceType = typeof(TSource);
 			this.destinationType = typeof(TDestination);
-			this.mappings = new Collection<BaseMappingItem>();
+			this.mappingItems = new Collection<BaseMappingItem>();
 			this.ignoreItems = new Collection<string>();
 			this.converters = new Dictionary<string, Func<object, object>>();
 		}
@@ -60,11 +62,24 @@ namespace Mapping.Core.Mappings.ReflectionMappings
 
 			if (converters.ContainsKey(destination.Name))
 			{
-				mappings.Add(new CustomMappingItem(destination, converters[destination.Name]));
+				mappingItems.Add(new ConvertMappingItem(destination, converters[destination.Name]));
+				return;
 			}
-			else if (destination.GetValueType() == source.GetValueType())
+
+			var sourceItemType = source.GetValueType();
+			var destinationItemType = destination.GetValueType();
+
+			if (sourceItemType == destinationItemType)
 			{
-				mappings.Add(new ReflectionMappingItem(source, destination));
+				mappingItems.Add(new ReflectionMappingItem(source, destination));
+				return;
+			}
+
+			var key = string.Concat(sourceItemType.FullName, destinationItemType.FullName);
+
+			if (mappings.ContainsKey(key))
+			{
+				mappingItems.Add(new CustomMappingItem(source, destination, (IMapping)mappings[key]));
 			}
 		}
 
@@ -99,11 +114,11 @@ namespace Mapping.Core.Mappings.ReflectionMappings
 
 		#region IMapping
 
-		public TDestination Map(TSource source)
+		public object Map (object source)
 		{
 			TDestination destination = new TDestination();
 
-			foreach (var mapItem in mappings)
+			foreach (var mapItem in mappingItems)
 			{
 				mapItem.FillDestination(source, destination);
 			}

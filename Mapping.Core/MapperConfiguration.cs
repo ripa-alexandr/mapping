@@ -8,17 +8,17 @@ namespace Mapping.Core
 {
 	public class MapperConfiguration
 	{
-		private readonly Dictionary<string, object> mappings;
+		private readonly Dictionary<string, IMapping> mappings;
 
 		public MapperConfiguration()
 		{
-			mappings = new Dictionary<string, object>();
+			mappings = new Dictionary<string, IMapping>();
 		}
 
 		public IConfigurationMapping<TSource, TDestination> CreateMap<TSource, TDestination>() where TDestination : new()
 		{
 			var key = GenerateKey<TSource, TDestination>();
-			var mapping = new ReflectionMapping<TSource, TDestination>();
+			var mapping = new ReflectionMapping<TSource, TDestination>(mappings);
 
 			mappings.Add(key, mapping);
 
@@ -33,7 +33,7 @@ namespace Mapping.Core
 			mappings.Add(key, mapping);
 		}
 
-		internal IDictionary<string, object> Initialize()
+		internal IDictionary<string, IMapping> Initialize()
 		{
 			foreach (var mapping in mappings)
 			{

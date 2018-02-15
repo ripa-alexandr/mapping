@@ -6,7 +6,7 @@ namespace Mapping.Core
 {
 	public static class Mapper
 	{
-		private static IDictionary<string, object> mappings;
+		private static IDictionary<string, IMapping> mappings;
 
 		public static void Initialize(MapperConfiguration configuration)
 		{
@@ -22,8 +22,8 @@ namespace Mapping.Core
 				throw new InvalidOperationException("Mapping does not exist. Call Initialize with appropriate configuration.");
 			}
 
-			var mapping = (IMapping<TSource, TDestination>)mappings[key];
-			var destination = mapping.Map(source);
+			var mapping = mappings[key];
+			var destination = (TDestination)mapping.Map(source);
 
 			return destination;
 		}

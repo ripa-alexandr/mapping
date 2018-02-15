@@ -8,6 +8,6 @@ namespace Mapping.Console
 {
 	public class D
 	{
-		public string Age { get; set; }
+		public int Age { get; set; }
 	}
 }

@@ -19,7 +19,7 @@ namespace Mapping.Console
 				FirstName = "Gregory",
 				LastName = "House",
 				Age = "39",
-				SecondAge = new C()
+				SecondAge = new C() { Age = 99 }
 			};
 			
 			var config = new MapperConfiguration();

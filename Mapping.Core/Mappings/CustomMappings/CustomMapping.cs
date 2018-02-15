@@ -3,7 +3,7 @@ using Mapping.Core.Api;
 
 namespace Mapping.Core.Mappings.CustomMappings
 {
-	internal class CustomMapping<TSource, TDestination> : IMapping<TSource, TDestination> where TDestination : new()
+	internal class CustomMapping<TSource, TDestination> : IMapping where TDestination : new()
 	{
 		private readonly Func<TSource, TDestination> func;
 
@@ -14,9 +14,9 @@ namespace Mapping.Core.Mappings.CustomMappings
 
 		#region IMapping
 
-		public TDestination Map(TSource source)
+		public object Map(object source)
 		{
-			return func(source);
+			return func((TSource)source);
 		}
 
 		#endregion
