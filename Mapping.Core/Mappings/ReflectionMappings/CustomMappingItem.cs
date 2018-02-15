@@ -19,10 +19,10 @@ namespace Mapping.Core.Mappings.ReflectionMappings
 
 		internal override void FillDestination (object source, object destination)
 		{
-			var sourceItemValue = sourceInfo.GetValue(source);
-			var mappedSourceItemValue = mapping.Map(sourceItemValue);
+			var sourceValue = sourceInfo.GetValue(source);
+			var mappedSourceValue = mapping.Map(sourceValue);
 
-			destinationInfo.SetValue(destination, mappedSourceItemValue);
+			destinationInfo.SetValue(destination, mappedSourceValue);
 		}
 	}
 }
